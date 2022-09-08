@@ -5,6 +5,7 @@ from .types.coords import Coords
 
 Matrix = list[list[Tile]]
 
+
 class Grid:
     def __init__(self, size_x: int, size_y):
         self._size_x = size_x
@@ -14,16 +15,14 @@ class Grid:
         def move_callback(entity, new_coords: Coords):
             # TODO optimalizovat
             coords = self.get_entity_coords(entity)
-            
+
             if not coords:
                 raise Exception("Entity not found in grid.")
 
             if not self.coords_valid(new_coords):
                 raise Exception("New coords are out of range.")
 
-        callbacks: dict = {
-            'move_callback': move_callback
-        }
+        callbacks: dict = {"move_callback": move_callback}
 
         for y in range(self._size_y):
             self._grid.append([])
@@ -31,10 +30,7 @@ class Grid:
                 self._grid[-1].append(Tile(callbacks=callbacks))
 
     def coords_valid(self, coords: Coords) -> bool:
-        return (
-            coords.x >= 0 and coords.x < self._size_x
-            and coords.y >= 0 and coords.y < self._size_y
-        )
+        return 0 <= coords.x < self._size_x and 0 <= coords.y < self._size_y
 
     def get_entity_coords(self, entity: AbstractEntity) -> Coords | bool:
         for y in range(self._size_y):

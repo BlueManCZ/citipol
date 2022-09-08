@@ -1,5 +1,5 @@
 class AbstractEntity:
-    def __init__(self, char = "."):
+    def __init__(self, char="."):
         self._char = char
 
     def __str__(self):
