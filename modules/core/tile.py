@@ -2,9 +2,9 @@ from .entities.abstract_entity import AbstractEntity
 
 
 class Tile:
-    def __init__(self, callbacks):
+    def __init__(self, callbacks=False):
         self._entities = []
-        self._callbacks = callbacks
+        self._callbacks = callbacks if callbacks else {}
 
     def add_entity(self, entity: AbstractEntity):
         self._entities.append(entity)
