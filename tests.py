@@ -1,5 +1,6 @@
 import pytest
-
+import sys
 
 if __name__ == "__main__":
-    pytest.main(["-x", "tests", "-v"])
+    status = pytest.main(["-x", "tests", "-v"])
+    sys.exit(status)
