@@ -1,0 +1,2 @@
+class EntitySettings:
+    char: str = "."

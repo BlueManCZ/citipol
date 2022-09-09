@@ -15,15 +15,20 @@ class Grid:
 
         def move_callback(entity: AbstractEntity, new_coords: Coords) -> None:
             # TODO optimalizovat
-            coords = self.get_entity_coords(entity)
+            old_tile = self.get_entity_tile(entity)
 
-            if not coords:
+            if not old_tile:
                 raise Exception("Entity not found in grid.")
 
             if not self.coords_valid(new_coords):
                 raise InvalidCoordsException(
                     "New coordinates are not valid on this grid."
                 )
+
+            new_tile = self.get_tile(new_coords)
+
+            old_tile.remove_entity(entity)
+            new_tile.add_entity(entity)
 
         callbacks: dict = {"move_callback": move_callback}
 
@@ -42,13 +47,21 @@ class Grid:
             return self._grid[coords.y][coords.x]
         raise InvalidCoordsException("Coordinates are not valid on this grid.")
 
-    def get_entity_coords(self, entity: AbstractEntity) -> Coords | bool:
+    def get_entity_coords(self, entity: AbstractEntity) -> Coords | None:
         """Find Entity coordinates"""
         for y_coord in range(self._size_y):
             for x_coord in range(self._size_x):
                 if self.get_tile(Coords(x_coord, y_coord)).has_entity(entity):
                     return Coords(x_coord, y_coord)
-        return False
+        return None
+
+    def get_entity_tile(self, entity: AbstractEntity) -> Tile | None:
+        for y_coord in range(self._size_y):
+            for x_coord in range(self._size_x):
+                tile = self.get_tile(Coords(x_coord, y_coord))
+                if tile.has_entity(entity):
+                    return tile
+        return None
 
     def get_matrix(self) -> Matrix:
         """Return raw matrix (list of lists) of Tiles"""
