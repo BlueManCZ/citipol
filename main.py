@@ -3,10 +3,7 @@
 """
 Main script for starting the application
 """
-
-from modules.core.grid import Grid
-from modules.core.entities.wall import Wall
-from modules.core.types import Coords
+from modules.core import Core
 
 if __name__ == "__main__":
     # grid = Grid(8, 4)
@@ -22,11 +19,19 @@ if __name__ == "__main__":
     #         case ["move"]:
     #             pass
 
-    world_file = get_world_file(argv)
+    # world_file = get_world_file(argv)
+    #
+    # if world_file:
+    #     world = World.from_file(world_file)
+    #     world = World.from_file(world_file)
+    # else:
+    #     world = World()
+    #
+    # game1 = Game(world)
+    # game2 = Game(world)
+    #
+    # game.get_state()
+    #
+    # game.set_state()
 
-    if world_file:
-        world = World.from_file(world_file)
-    else:
-        world = World()
-
-    GUI(world)
+    game_core = Core()

@@ -11,5 +11,6 @@ class Wall(AbstractStructureEntity):
     def __init__(self) -> None:
         settings = EntitySettings()
         settings.char = "█"
-
         super().__init__(settings)
+
+        self.set_solid()

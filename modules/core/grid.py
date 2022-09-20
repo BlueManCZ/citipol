@@ -1,24 +1,28 @@
 """Module for the Grid package"""
-
+from modules.core import AbstractObject
 from modules.core.tile import Tile
-from modules.core.entities.abstract_entity import AbstractEntity
-from modules.core.types import Coords, Matrix
+from modules.core.types import Coords, Event
+
+Matrix = list[list[Tile]]
 
 
-class Grid:
+class Grid(AbstractObject):
     """Class representing a 2D grid of Tiles"""
 
     def __init__(self, size_x: int, size_y: int) -> None:
+        super().__init__()
+
         self._size_x = size_x
         self._size_y = size_y
         self._grid: Matrix = []
 
-        def move_callback(entity: AbstractEntity, new_coords: Coords) -> None:
-            # TODO optimalizovat
-            old_tile = self.get_entity_tile(entity)
+        def move_handler(event: Event) -> None:
+            direction = event.get_data("direction")
+            old_tile = event.get_object_path()[-2]
 
-            if not old_tile:
-                raise Exception("Entity not found in grid.")
+            old_coords = self.get_coords_by_tile(old_tile)
+
+            new_coords = old_coords.get_next(direction)
 
             if not self.coords_valid(new_coords):
                 raise InvalidCoordsException(
@@ -27,15 +31,17 @@ class Grid:
 
             new_tile = self.get_tile(new_coords)
 
-            old_tile.remove_entity(entity)
-            new_tile.add_entity(entity)
+            new_tile.add_entity(event.get_origin())
+            old_tile.remove_entity(event.get_origin())
 
-        callbacks: dict = {"move_callback": move_callback}
+        self.add_event_listener("move", move_handler)
 
         for _ in range(self._size_y):
             self._grid.append([])
             for _ in range(self._size_x):
-                self._grid[-1].append(Tile(callbacks=callbacks))
+                tile = Tile()
+                tile.set_event_parent(self)
+                self._grid[-1].append(tile)
 
     def coords_valid(self, coords: Coords) -> bool:
         """Check validness of Grid coordinates"""
@@ -47,20 +53,14 @@ class Grid:
             return self._grid[coords.y][coords.x]
         raise InvalidCoordsException("Coordinates are not valid on this grid.")
 
-    def get_entity_coords(self, entity: AbstractEntity) -> Coords | None:
-        """Find Entity coordinates"""
+    def get_coords_by_tile(self, tile: Tile) -> Coords | None:
+        """Get coordinates of Tile"""
+        # TODO optimalizovat
         for y_coord in range(self._size_y):
             for x_coord in range(self._size_x):
-                if self.get_tile(Coords(x_coord, y_coord)).has_entity(entity):
+                current_tile = self.get_tile(Coords(x_coord, y_coord))
+                if tile == current_tile:
                     return Coords(x_coord, y_coord)
-        return None
-
-    def get_entity_tile(self, entity: AbstractEntity) -> Tile | None:
-        for y_coord in range(self._size_y):
-            for x_coord in range(self._size_x):
-                tile = self.get_tile(Coords(x_coord, y_coord))
-                if tile.has_entity(entity):
-                    return tile
         return None
 
     def get_matrix(self) -> Matrix:

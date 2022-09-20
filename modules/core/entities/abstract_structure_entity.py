@@ -7,3 +7,10 @@ class AbstractStructureEntity(AbstractEntity):
 
     def __init__(self, settings: EntitySettings) -> None:
         super().__init__(settings)
+        self._solid = False
+
+    def is_solid(self):
+        return self._solid
+
+    def set_solid(self, state=True):
+        self._solid = state
