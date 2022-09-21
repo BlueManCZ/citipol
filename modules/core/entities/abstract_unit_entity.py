@@ -1,9 +1,13 @@
+"""Module for AbstractUnitEntity"""
+
 from modules.core.entities.entity_settings import EntitySettings
-from .abstract_entity import AbstractEntity
-from ..types import Event, Direction
+from modules.core.entities.abstract_entity import AbstractEntity
+from modules.core.types import Event, Direction
 
 
 class AbstractUnitEntity(AbstractEntity):
+    """Abstraction for entities representing unit"""
+
     type = "unit"
 
     def __init__(self, settings: EntitySettings) -> None:

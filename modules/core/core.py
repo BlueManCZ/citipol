@@ -1,10 +1,15 @@
+"""Application core module"""
+
 from modules.core.entities.human import Human
 from modules.core.event_manager import EventManager
 from modules.core.grid import Grid
 from modules.core.types import Coords, Direction
 
 
+# pylint: disable=too-few-public-methods
 class Core:
+    """Main object for handling core application logic."""
+
     def __init__(self):
         self._event_manager = EventManager()
         self._grid = Grid(16, 4)

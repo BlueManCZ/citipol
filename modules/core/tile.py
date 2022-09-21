@@ -20,9 +20,11 @@ class Tile(AbstractObject):
         self.get_entities().add(entity)
 
     def remove_entity(self, entity: AbstractEntity) -> None:
+        """Remove entity from Tile"""
         self.get_entities().remove(entity)
 
     def get_entities(self) -> set[AbstractEntity]:
+        """Return list of entities on Tile"""
         return self._entities
 
     def get_entities_by_type(self, entity_type: str) -> set[AbstractEntity]:
@@ -31,6 +33,8 @@ class Tile(AbstractObject):
         return set(filter(lambda e: e.type == entity_type, self.get_entities()))
 
     def get_entities_sorted(self):
+        """Return list of entities sorted by type"""
+
         def sort_func(entity: AbstractEntity):
             for i, entity_class in enumerate(entity_class_order):
                 if issubclass(type(entity), entity_class):

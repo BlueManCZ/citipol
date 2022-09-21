@@ -2,6 +2,8 @@
 
 from typing import Type
 
+from .entity_settings import EntitySettings
+
 from .abstract_entity import AbstractEntity
 from .abstract_terrain_entity import AbstractTerrainEntity
 from .abstract_structure_entity import AbstractStructureEntity
@@ -17,6 +19,7 @@ entity_class_order: list[Type[AbstractEntity]] = [
 
 
 def get_entity_class(entity_type: str) -> Type[AbstractEntity] | None:
+    """Return entity class by type"""
     for entity in entity_class_order:
         if entity.type == entity_type:
             return entity

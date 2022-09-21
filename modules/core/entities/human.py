@@ -1,7 +1,6 @@
 """Module for Human entity"""
 
-from modules.core.entities import AbstractUnitEntity
-from modules.core.entities.entity_settings import EntitySettings
+from . import AbstractUnitEntity, EntitySettings
 
 
 # pylint: disable=too-few-public-methods

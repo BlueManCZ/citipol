@@ -1,7 +1,6 @@
 """Module for Wall entity"""
 
-from modules.core.entities.entity_settings import EntitySettings
-from .abstract_structure_entity import AbstractStructureEntity
+from . import AbstractStructureEntity, EntitySettings
 
 
 # pylint: disable=too-few-public-methods
